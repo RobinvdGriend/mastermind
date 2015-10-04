@@ -1,4 +1,6 @@
 class GameHandler
+  attr_accessor :winner
+
   CODE_LENGTH = 4
   CODE_NUMBERS = (1..6)
   MAX_TRIES = 12
@@ -7,6 +9,7 @@ class GameHandler
     @code_guesses = []
     @code_solution = []
     @tries = 0
+    @winner
   end
 
   def enter_guess(guess)
@@ -14,23 +17,22 @@ class GameHandler
 
     validate_code(code)
     save_code(code)
+    check_won
   end
 
   def enter_code_solution(input)
     code_solution = to_code(input)
   end
 
+  private
+
   def check_won
     if used_all_tries?
-      return :code_maker
+      @winner = :codemaker
     elsif code_guessed?
-      return :code_breaker
-    else
-      return false
+      @winner = :codebraker
     end
   end
-
-  private
 
   def to_code(string)
     code = []
