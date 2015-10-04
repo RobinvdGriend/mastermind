@@ -1,13 +1,12 @@
 class GameHandler
   attr_accessor :winner
-
-  CODE_LENGTH = 4
-  CODE_NUMBERS = (1..6)
-  MAX_TRIES = 12
+  attr_reader :game_rules
 
   def initialize
     @code_guesses = []
     @code_solution = []
+
+    @game_rules = {code_length: 4, code_numbers: (1..6), max_tries: 12}
     @tries = 0
     @winner
   end
@@ -49,24 +48,24 @@ class GameHandler
 
   def validate_code(code)
     unless valid_size?(code)
-      raise "Invalid input: enter #{CODE_LENGTH} numbers"
+      raise "Invalid input: enter #{game_rules[:code_length]} numbers"
     end
 
     unless valid_numbers?(code)
-      raise "Invalid input: enter numbers #{CODE_NUMBERS.begin} to #{CODE_NUMBERS.end}"
+      raise "Invalid input: enter numbers #{game_rules[:code_numbers].begin} to #{game_rules[:code_numbers].end}"
     end
   end
 
   def valid_size?(code)
-    code.size == CODE_LENGTH
+    code.size == game_rules[:code_length]
   end
 
   def valid_numbers?(code)
-    code.all? { |num| CODE_NUMBERS.include?(num) }
+    code.all? { |num| game_rules[:code_numbers].include?(num) }
   end
 
   def used_all_tries?
-    tries >= MAX_TRIES
+    tries >= game_rules[:max_tries]
   end
 
   def code_guessed?
