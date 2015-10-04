@@ -1,4 +1,4 @@
-class HumanPlayer
+class Player
   attr_accessor :game, :role
   attr_reader :name
 
@@ -11,43 +11,23 @@ class HumanPlayer
     @game = args.fetch(:game)
   end
 
-  def take_turn
-    print_turn_message
-
-    begin
-      guess = get_guess
-      send_guess(guess)
-    rescue StandardError => error
-      puts error
-      retry
-    end
-  end
-
   def check_won
     if get_winner.nil?
       return false
     elsif get_winner == role
-      player_won
+      if role == :codebreaker
+        puts "Congratulations! You cracked the code and won!"
+      else
+        puts "Congratulations! The code stayed uncracked and you won!"
+      end
       return :won
     else
-      player_lost
+      puts "You lost!"
       return :lost
     end
   end
 
   private
-
-  def player_lost
-    puts "You lost!"
-  end
-
-  def player_won
-    if role == :codebreaker
-      puts "Congratulations! You cracked the code and won!"
-    else
-      puts "Congratulations! The code stayed uncracked and you won!"
-    end
-  end
 
   def get_winner
     game.winner
@@ -55,10 +35,6 @@ class HumanPlayer
 
   def send_guess(guess)
     game.enter_guess(guess)
-  end
-
-  def send_code(code)
-    game.enter_code_solution(code)
   end
 
   def print_turn_message
@@ -71,13 +47,5 @@ class HumanPlayer
     print "\n"
 
     guess
-  end
-
-  def code_numbers
-    game.code_numbers
-  end
-
-  def code_length
-    game.code_length
   end
 end
