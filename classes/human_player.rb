@@ -27,19 +27,27 @@ class HumanPlayer
     if get_winner.nil?
       return false
     elsif get_winner == role
-      if role == :codebreaker
-        puts "Congratulations! You cracked the code and won!"
-      else
-        "Congratulations! The code stayed uncracked and you won!"
-      end
+      player_won
       return :won
     else
-      puts "You lost!"
+      player_lost
       return :lost
     end
   end
 
   private
+
+  def player_lost
+    puts "You lost!"
+  end
+
+  def player_won
+    if role == :codebreaker
+      puts "Congratulations! You cracked the code and won!"
+    else
+      puts "Congratulations! The code stayed uncracked and you won!"
+    end
+  end
 
   def get_winner
     game.winner
